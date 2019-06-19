@@ -1,0 +1,207 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html style="background:#3e3e40">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Company Registration </title>
+    <link href="~/Content/Inspinia/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Inspinia/font-awesome.min.css" rel="stylesheet" />
+
+    
+    <link href="~/Content/Inspinia/toastr.min.css" rel="stylesheet" />
+    <link rel="icon" href="../img/logofront.png" />
+    <link href="~/Content/Inspinia/jquery.steps.css" rel="stylesheet" />
+    <link href="~/Content/Inspinia/animate.css" rel="stylesheet" />
+    <link href="~/Content/Inspinia/style.css" rel="stylesheet" />
+    <link href="~/Content/Inspinia/CustomCSS.css" rel="stylesheet" />
+
+    <link href="~/Content/Inspinia/sweetalert.css" rel="stylesheet" />
+    <script src="~/Content/Inspinia/CustomJS.js"></script>
+    <script src="~/Angular/angular.min.js"></script>
+    <script src="~/Angular/Controller/wizard.js"></script>
+</head>
+<body class="" style="background:transparent" ng-app="myApp" ng-controller="WizardMgmt">
+    <div class="col-md-12" >
+
+        <div class="spiner-example" style="padding-top:250px;" ng-show="isSaving==1">
+            <div class="sk-spinner sk-spinner-circle" style="width:80px;height:80px">
+                <div class="sk-circle1 sk-circle"></div>
+                <div class="sk-circle2 sk-circle"></div>
+                <div class="sk-circle3 sk-circle"></div>
+                <div class="sk-circle4 sk-circle"></div>
+                <div class="sk-circle5 sk-circle"></div>
+                <div class="sk-circle6 sk-circle"></div>
+                <div class="sk-circle7 sk-circle"></div>
+                <div class="sk-circle8 sk-circle"></div>
+                <div class="sk-circle9 sk-circle"></div>
+                <div class="sk-circle10 sk-circle"></div>
+                <div class="sk-circle11 sk-circle"></div>
+                <div class="sk-circle12 sk-circle"></div>
+            </div>
+        </div>
+
+    </div>
+    <div ng-show="isSaving==0">
+        <h1 style="color:#ffeda3;text-align:center">
+            EventAide Company Registration Form
+        </h1>
+        <a href="../LandingPage/Index" class="btn btn-outline btn-warning pull-right" style="margin-right:20px">Return to Landing Page</a>
+        <div class="wizard-big wizard clearfix">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <form id="msform">
+                        <!-- progressbar -->
+                        <ul id="progressbar">
+                            <li ng-repeat="step in steps"  ng-class="{'active':step.step <= currentStep}" >{{step.step}}.{{step.name}}</li>
+                            
+                        </ul>
+                        <!-- fieldsets -->
+                        <div ng-switch="currentStep">
+                            <div ng-switch-when="1">
+                                <fieldset>
+                                    <h2 class="fs-title">Company Service Type </h2>
+                                    <h3 class="fs-subtitle">Category of your service offered</h3>
+                                    <div class="form-group">
+
+                                        @*<select class="form-control" style="font-size:19px;font-weight:600;padding:0px 12px 0px" ng-model="c.ServiceType">*@
+
+                                        <select ng-model="ServiceType" ng-change="Onchx(ServiceType)" class="form-control" ng-options="y.ServiceName for (x, y) in ServiceList" required style="font-size:19px;font-weight:600;padding:0px 12px 0px">
+
+                                            
+                                        </select>
+                                      
+                                        
+                                    </div>
+                                    <button type="button" class="btn btn-outline btn-danger btn-rounded" ng-show="currentStep != 1 " ng-click="BackStep()">Back</button>
+                                    <button type="button" class="btn btn-outline btn-primary btn-rounded" ng-click="NextStep1(ServiceType)">Next</button>
+
+                                </fieldset>
+                            </div>
+                            <div ng-switch-when="2">
+                                <fieldset>
+                                    <ng-form name="myForm">
+                                        <p></p>
+                                        <h2 class="fs-title">Company Profiles</h2>
+                                        <h3 class="fs-subtitle">Basic information of your company</h3>
+                                        <div class="form-group">
+                                            
+
+                                            <input type="text" class="form-control" placeholder="Company Name" name="Companyname" ng-model="c.CompanyName" ng-init="c.CompanyName=CompanyDetails.CompanyInfo.CompanyName" ng-required="true" required />
+                                        </div>
+                                        <label class="pull-left">Province</label>
+
+                                        <div class="form-group">
+
+                                            <select ng-model="c.Prov" name="Province" class="form-control ng-touched ng-dirty ng-valid-parse ng-pristine ng-empty ng-untouched ng-invalid ng-invalid-required" required="" ng-init="c.Prov=CompanyDetails.CompanyInfo.Prov" ng-options="y.name for (x, y) in province" ng-change="provChange(c.Prov)" style="font-size:16px;font-weight:600;padding:0px 12px 0px" ng-disabled="true"><option value="?" selected="selected"></option></select>
+
+                                        </div>
+                                        <label class="pull-left">City</label>
+
+                                        <div class="form-group">
+                                            <select ng-model="c.City" name="City" class="form-control ng-pristine ng-empty ng-touched ng-untouched ng-invalid ng-invalid-required" required="" ng-init="c.City=CompanyDetails.CompanyInfo.City" ng-options="y.cityName for (x, y) in city" style="font-size:16px;font-weight:600;padding:0px 12px 0px"><option value="?" selected="selected"></option></select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="3" name="Background" placeholder="Company background or details" ng-model="c.Sypnosis" ng-init="c.Sypnosis=CompanyDetails.CompanyInfo.Sypnosis" required></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="number" onkeypress="if(this.value.length==11) return false;" class="form-control" name="Contact" placeholder="Contact Number" ng-model="c.ContactNo" ng-init="c.ContactNo=CompanyDetails.CompanyInfo.ContactNo" required />
+                                        </div>
+                                        <div class=""><label>Price Range</label></div>
+                                        <div class="col-sm-6">
+                                            <div class="input-group m-b">
+                                                <span class="input-group-addon">₱</span>
+                                                <input type="number" class="form-control" name="StartP" style="margin-bottom:0px;text-align:right" placeholder="Starting Price" ng-model="c.StartPrice" ng-init="c.StartPrice=CompanyDetails.CompanyInfo.StartPrice" required>
+                                                <span class="input-group-addon">.00</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="input-group m-b">
+                                                <span class="input-group-addon">₱</span>
+                                                <input type="number" class="form-control" name="EndP" style="margin-bottom:0px;text-align:right" placeholder="End Price" ng-model="c.EndPrice" ng-init="c.EndPrice=CompanyDetails.CompanyInfo.EndPrice" required>
+                                                <span class="input-group-addon">.00</span>
+                                            </div>
+                                        </div>
+                                      
+                                        <button type="button" class="btn btn-outline btn-danger btn-rounded" ng-show="currentStep != 1 " ng-click="BackStep()">Back</button>
+                                        <button type="button" class="btn btn-outline btn-primary btn-rounded" ng-click="NextStep2(c)" ng-show="myForm.Companyname.$valid && myForm.Province.$valid && myForm.City.$valid && myForm.Background.$valid && myForm.Contact.$valid && myForm.StartP.$valid && myForm.EndP.$valid">Next</button>
+
+                                    </ng-form>
+                                </fieldset>
+                            </div>
+                            <div ng-switch-when="3">
+                            <fieldset>
+                                <h2 class="fs-title">Show your Works</h2>
+                                <h3 class="fs-subtitle">Example of your outputs and services (At least 3-4 photos)</h3>
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <td>Image</td>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="image in imagesrc track by $index">
+                                            <td class="hidden-xs" style="vertical-align:middle">
+                                                <img ng-src="{{image.Src}}" title="{{image.title}}" style="width:100px;" />
+                                            </td>
+                                           
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <input type="file" multiple ng-files="getTheFiles($files)" />
+                                    </div>
+                                   
+                                </div>
+                                <button type="button" class="btn btn-outline btn-danger btn-rounded" ng-show="currentStep != 1 " ng-click="BackStep()">Back</button>
+                                <button type="button" class="btn btn-outline btn-primary btn-rounded" ng-show="imagesrc.length"  ng-click="SaveCompany()">Submit</button> 
+                            </fieldset>
+                                </div>
+                        </div>
+                    </form>     
+                    <!-- link to designify.me code snippets -->
+                   
+                    <!-- /.link to designify.me code snippets -->
+                </div>
+            </div>
+            <!-- /.MultiStep Form -->
+        </div>
+    </div>
+        
+      
+
+    
+</body>
+</html>
+
+
+
+
+<script src="~/Content/Inspinia/jquery-2.1.1.js"></script>
+<script src="/Content/Inspinia/bootstrap.min.js"></script>
+<script src="/Content/Inspinia/jquery.metisMenu.js"></script>
+<script src="/Content/Inspinia/jquery.slimscroll.min.js"></script>
+<script src="/Content/Inspinia/jquery.validate.min.js"></script>
+<script src="/Content/Inspinia/toastr.min.js"></script>
+<script src="/Content/Inspinia/inspinia.js"></script>
+<script src="/Content/Inspinia/pace.min.js"></script>
+<script src="~/Content/Inspinia/sweetalert.min.js"></script>
+<script src="/Content/Inspinia/bootstrap-datepicker.js"></script>
+<script src="~/Content/Inspinia/jquery.steps.min.js"></script>
+<script src="~/Content/Inspinia/icheck.min.js"></script>
+
+<script>
+    localStorage.setItem("username","@TempData["username"]");
+    
+</script>

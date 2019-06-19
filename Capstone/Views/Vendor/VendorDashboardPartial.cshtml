@@ -1,0 +1,138 @@
+﻿<head>
+    <title>EventAide | Dashboard</title>
+</head>
+
+
+<div class="col-md-12" id="loadSpinner">
+
+    <div class="spiner-example" style="padding-top:200px;">
+        <div class="sk-spinner sk-spinner-cube-grid" style="width:80px;height:80px;">
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+        </div>
+    </div>
+
+</div>
+<div class="wrapper wrapper-content" style="display:none;" id="vendordashboardContent">
+    <div class="row animated fadeInRight">
+        <div class="col-md-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Company Details</h5>
+                </div>
+                <div>
+                    <div class="ibox-content no-padding border-left-right">
+                        <img alt="image" class="img-responsive" ng-src="{{VendorDetails.FilePath}}">
+                    </div>
+                    <div class="ibox-content profile-content">
+                        <h4><strong>{{VendorDetails.CompanyName}}</strong></h4>
+                        <p><strong>{{VendorDetails.ServiceName}}</strong></p>
+                        <p><i class="fa fa-map-marker"></i> {{VendorDetails.City}}, {{VendorDetails.Province}}</p>
+                        <h5>
+                            About Company
+                        </h5>
+                        <p>
+                            {{VendorDetails.Sypnosis}}
+                        </p>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="widget lazur-bg p-xl text-center">
+                <div class="m-b-md" ng-show="Rating > 0">
+                    <i class="fa fa-star fa-4x" style="color:#e2ff00"></i>
+                    <h1 class="m-xs">{{Rating}}</h1>
+                    <h3 class="font-bold no-margins">
+                        Stars
+                    </h3>
+                    <small>Your Company has been rated by {{TotalRate[0].RateCount}} users</small>
+                </div>
+                <div class="m-b-md" ng-show="Rating == 0">
+                    <i class="fa fa-star fa-4x" style="color:#e2ff00"></i>
+                    <h1 class="m-xs">{{Rating}}</h1>
+                    <h3 class="font-bold no-margins">
+                        You have not been yet rated by any clients
+                    </h3>
+                    
+                </div>
+            </div>
+            
+        </div><div class="col-lg-4">
+                  <div class="widget lazur-bg p-xl text-center">
+                      <div class="m-b-md" >
+                          <i class="fa fa-child fa-4x" style="color:#e2ff00"></i>
+                          <h1 class="m-xs">0</h1>
+                          <h3 class="font-bold no-margins">
+                             Served clients so far
+                          </h3>
+                          <small> Keep up the good work! </small>
+                      </div>
+                      
+                  </div>
+    
+</div>
+        <div class="col-md-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Reviews on your company</h5>
+                    
+                </div>
+                <div class="ibox-content" style="background:#eae7e3">
+
+                    <div>
+                        <div class="feed-activity-list" style="overflow-y:scroll;height:200px;">
+
+                            
+
+                            
+
+                            <div class="feed-element" ng-repeat="rates in RateDetails|orderBy:'-DateRated'">
+                               
+                                <a href="#" class="pull-left">
+                                    <img alt="image" class="img-circle" ng-src="{{rates.profpath}}">
+                                </a>
+                                <div class="media-body ">
+                                    <small class="pull-right" style="margin-right:20px;">{{rates.DateRated}}</small>
+                                    <strong>{{rates.userfname}} {{rates.userlname}}</strong> <br />
+                                    <small class="text-muted inline">
+                                        <span ng-class="{'fa fa-star checked': rates.Rating >= 1,'fa fa-star ': rates.Rating < 1}"></span>
+                                        <span ng-class="{'fa fa-star checked': rates.Rating >= 2,'fa fa-star ': rates.Rating < 2}"></span>
+                                        <span ng-class="{'fa fa-star checked': rates.Rating >= 3,'fa fa-star ': rates.Rating < 3}"></span>
+                                        <span ng-class="{'fa fa-star checked': rates.Rating >= 4,'fa fa-star ': rates.Rating < 4}"></span>
+                                        <span ng-class="{'fa fa-star checked': rates.Rating >= 5,'fa fa-star ': rates.Rating < 5}"></span>
+                                    </small>
+                                    <div class="well" style="margin-right:20px;">
+                                        {{rates.Comment}}
+                                    </div>
+                                    
+                                </div>
+                                <hr  style="border-top:1px solid #b12edc;margin-right:20px;"/>
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                        </div>
+
+                      
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

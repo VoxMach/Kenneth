@@ -1,0 +1,460 @@
+﻿<head>
+    <title>EventAide | Bookings</title>
+</head>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <span class="text-muted small pull-right">Last modification: <i class="fa fa-clock-o"></i> 2:10 pm - 12.06.2014</span>
+                    <h2>Clients</h2>
+                    <p>
+                        
+                    </p>
+                    
+                    <div class="clients-list">
+                       
+
+                            <ul class="nav nav-tabs">
+                               
+                                <li ng-class="{'active':Tab1==1}"><a ng-click="goTab1()"> <i class="fa fa-plus"></i> Pendings</a></li>
+                                <li ng-class="{'active':Tab2==1}"><a ng-click="goTab2()"><i class="fa fa-users"></i> Clients</a></li>
+                            </ul>
+
+                            
+                           
+                        <div class="tab-content">
+                            
+                            <div id="tab1" ng-show="Tab1 > 0" class="tab-pane active">
+                                <div class="full-height-scroll">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <tbody>
+                                                <tr ng-repeat="Booking in Pendinglist" ng-style="{'background':(SelectedRow == Booking.$$hashKey)?'#c4c5c5':''}">
+                                                    <td >
+                                                        <div class="inline" ng-hide="Booking.BookStatus==3">
+                                                            <span ng-class="{'label label-success':Booking.eventType=='Birthdays',
+                                                                         'label label-primary':Booking.eventType=='Weddings',
+                                                                         'label label-info':Booking.eventType=='Reunions',
+                                                                         'label label-warning':Booking.eventType=='Others'}">{{Booking.eventType}}</span>
+                                                        </div>
+                                                        <div class="inline" ng-show="Booking.BookStatus==3">
+                                                            <span class="label label-danger">CANCEL</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="client-avatar"><img alt="image" ng-src="{{Booking.userpic}}"> </td>
+                                                    <td><a ng-click="showBookDetails(Booking)">{{Booking.userfname}} {{Booking.userlname}}</a></td>
+                                                    <td>
+                                                        <div class="inline" ng-hide="Booking.BookStatus==3 || Booking.BookStatus==4">
+                                                            <small ng-show="convertJsonDate(Booking.BookDate) ==convertJsonDate (Booking.BookDateEnd)">Requests a booking with your company on <strong> {{convertJsonDate(Booking.BookDate)}} </strong></small>
+
+                                                            <small ng-show="convertJsonDate(Booking.BookDate) != convertJsonDate(Booking.BookDateEnd)">Requests a booking with your company on <strong> {{convertJsonDate(Booking.BookDate)}} to {{convertJsonDate(Booking.BookDateEnd)}}</strong></small>
+                                                        </div>
+
+                                                        <div class="inline" ng-show="Booking.BookStatus==4">
+                                                            <small>Awaiting for confirmation..</small>
+                                                        </div>
+
+                                                        <div class="inline" ng-show="Booking.BookStatus==3">
+                                                            <small>wants to cancel the booking</small>
+                                                        </div>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm btn-rounded" ng-click="showTermModal(Booking)" ng-hide="Booking.BookStatus==3 || Booking.BookStatus ==4">Set Terms</button>
+                                                            <button class="btn btn-primary btn-sm btn-rounded" ng-click="AcceptCancel(Booking)" ng-show="Booking.BookStatus==3 ">Accept</button>
+                                                    </td>
+                                                    <td> 
+                                                            <button class="btn btn-danger btn-sm btn-rounded" ng-click="DeclineBooking(Booking)" ng-hide="Booking.BookStatus==3 ">Decline</button>
+                                                            <button class="btn btn-danger btn-sm btn-rounded" ng-click="DeclineCancel(Booking)" ng-show="Booking.BookStatus==3">Decline</button>
+                                                    </td>
+                                                </tr>
+                                                    
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tab2" ng-show="Tab2 > 0" class="tab-pane active">
+                                <div class="full-height-scroll">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <tbody>
+                                                <tr ng-repeat="Booking in BookingList" ng-style="{'background':(SelectedRow == Booking.$$hashKey)?'#c4c5c5':''}">
+                                                    <td>
+                                                        <span ng-class="{'label label-success':Booking.eventType=='Birthdays',
+                                                                         'label label-primary':Booking.eventType=='Weddings',
+                                                                         'label label-info':Booking.eventType=='Reunions',
+                                                                         'label label-warning':Booking.eventType=='Others'}">{{Booking.eventType}}</span>
+                                                    </td>
+                                                    <td class="client-avatar"><img alt="image" ng-src="{{Booking.userpic}}"> </td>
+                                                    <td><a ng-click="showBookDetails(Booking)">{{Booking.userfname}} {{Booking.userlname}}</a></td>
+                                                    <td>
+                                                        <small ng-show="convertJsonDate(Booking.BookDate) == convertJsonDate(Booking.BookDateEnd)">Booked on <strong> {{convertJsonDate(Booking.BookDate)}} </strong></small>
+
+                                                        <small ng-show="convertJsonDate(Booking.BookDate) != convertJsonDate(Booking.BookDateEnd)">Booked on <strong> {{convertJsonDate(Booking.BookDate)}} to {{convertJsonDate(Booking.BookDateEnd)}}</strong></small>
+
+
+                                                    </td>
+                                                    
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 "  id="EventDetDiv" >
+            <div class="ibox" id="InfoBday" ng-show="BdayCounter>0">
+
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-12 text-center align-items-center">
+                                    <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                    <div class="m-b-sm">
+                                        <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                             style="width: 62px;height:62px;">
+                                    </div>
+
+                                    <div class="col-lg-4 col-lg-offset-4" style="padding: 0px;margin-left:90px;">
+                                        <button type="button" ng-click="sendMessage()" class="btn btn-primary btn-sm btn-block center-orientation" style="width:120px;">
+                                            <i class="fa fa-envelope"></i> Send Message
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Birthday Details</strong>
+
+                                    <ul class="list-group clear-list">
+                                        <li class="list-group-item fist-item" style="text-align:center">
+
+                                            <strong style="color:#dc8806"> {{BdayDet.EventName}}</strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-birthday-cake">  </span>
+                                            <strong style="margin-left:5px;">{{BdayDet.CelebFirstN}} {{BdayDet.CelebLastN}}</strong>
+                                            <span class="badge badge-success">Celebrant</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-map-marker" style="width:13px;"></span>
+                                            <strong style="margin-left:5px;">{{BdayDet.CityName}}, {{BdayDet.ProvName}}</strong>
+                                            <span class="badge badge-success">Event Location</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-calendar" style="width:13px;"> </span>
+                                            <strong style="margin-left:5px;">{{BdayDet.EventDate}}, </strong>
+                                            <span class="badge badge-success">Event Date</span>
+                                        </li>
+                                        <li class="list-group-item" style="text-align:center">
+                                            <small class="pull-left">Message</small><br />
+                                            <p class="font-bold alert alert-success m-b-sm">
+                                                {{BookDetails.BookMsg}}
+                                            </p>
+
+                                        </li>
+
+                                    </ul>
+
+                                    <hr />
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="ibox" id="InfoWedding" ng-show="WeddingCounter>0">
+
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-12 text-center align-items-center">
+                                    <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                    <div class="m-b-sm">
+                                        <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                             style="width: 62px;height:62px;">
+                                    </div>
+
+                                    <div class="col-lg-4 col-lg-offset-4" style="padding: 0px;margin-left:90px;">
+                                        <button type="button"  ng-click="sendMessage()" class="btn btn-primary btn-sm btn-block center-orientation" style="width:120px;">
+                                            <i class="fa fa-envelope"></i> Send Message
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Wedding Details</strong>
+
+                                    <ul class="list-group clear-list">
+                                        <li class="list-group-item fist-item" style="text-align:center">
+
+                                            <strong style="color:#dc8806"> {{WedDet.EventName}}</strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-male">  </span>
+                                            <strong style="margin-left:5px;">{{WedDet.BrideFirstN}} {{WedDet.BrideLastN}}</strong>
+                                            <span class="badge badge-success">Groom</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-female">  </span>
+                                            <strong style="margin-left:5px;">{{WedDet.GroomFirstN}} {{WedDet.GroomLastN}}</strong>
+                                            <span class="badge badge-success">Bride</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-map-marker" style="width:13px;"></span>
+                                            <strong style="margin-left:5px;">{{WedDet.CityName}}, {{WedDet.ProvName}}</strong>
+                                            <span class="badge badge-success">Event Location</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-calendar" style="width:13px;"> </span>
+                                            <strong style="margin-left:5px;">{{WedDet.EventDate}}, </strong>
+                                            <span class="badge badge-success">Event Date</span>
+                                        </li>
+                                        <li class="list-group-item" style="text-align:center">
+                                            <small class="pull-left">Message</small><br />
+                                            <p class="font-bold alert alert-success m-b-sm">
+                                                {{BookDetails.BookMsg}}
+                                            </p>
+
+                                        </li>
+
+                                    </ul>
+
+                                    <hr />
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="ibox" id="InfoReunion" ng-show="ReunionCounter>0">
+
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-12 text-center align-items-center">
+                                    <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                    <div class="m-b-sm">
+                                        <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                             style="width: 62px;height:62px;">
+                                    </div>
+
+                                    <div class="col-lg-4 col-lg-offset-4" style="padding: 0px;margin-left:90px;">
+                                        <button type="button" ng-click="sendMessage()" class="btn btn-primary btn-sm btn-block center-orientation" style="width:120px;">
+                                            <i class="fa fa-envelope"></i> Send Message
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Reunion Details</strong>
+                                    
+                                    <ul class="list-group clear-list">
+                                        <li class="list-group-item fist-item" style="text-align:center">
+
+                                            <strong style="color:#dc8806"> {{ReunDet.EventName}}</strong><br />
+                                            <span style="font-weight:600">{{ReunDet.SchoolName}}</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-users">  </span>
+                                            <strong style="margin-left:5px;">{{ReunDet.ReunionType}} </strong>
+                                            <span class="badge badge-success vertical-align">Type</span>
+                                        </li>
+                                        
+                                        <li class="list-group-item">
+                                            <span class="fa fa-map-marker" style="width:13px;"></span>
+                                            <strong style="margin-left:5px;">{{ReunDet.CityName}}, {{ReunDet.ProvName}}</strong>
+                                            <span class="badge badge-success">Event Location</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-calendar" style="width:13px;"> </span>
+                                            <strong style="margin-left:5px;">{{ReunDet.EventDate}}, </strong>
+                                            <span class="badge badge-success">Event Date</span>
+                                        </li>
+                                        <li class="list-group-item" style="text-align:center">
+                                            <small class="pull-left">Message</small><br />
+                                            <p class="font-bold alert alert-success m-b-sm">
+                                                {{BookDetails.BookMsg}}
+                                            </p>
+
+                                        </li>
+
+                                    </ul>
+
+                                    <hr />
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="ibox" id="InfoOther" ng-show="OtherCounter>0">
+
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-12 text-center align-items-center">
+                                    <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                    <div class="m-b-sm">
+                                        <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                             style="width: 62px;height:62px;">
+                                    </div>
+
+                                    <div class="col-lg-4 col-lg-offset-4" style="padding: 0px;margin-left:90px;">
+                                        <button type="button" ng-click="sendMessage()" class="btn btn-primary btn-sm btn-block center-orientation" style="width:120px;">
+                                            <i class="fa fa-envelope"></i> Send Message
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Party Details</strong>
+
+                                    <ul class="list-group clear-list">
+                                        <li class="list-group-item fist-item" style="text-align:center">
+
+                                            <strong style="color:#dc8806"> {{OtherDet.EventName}}</strong><br />
+                                            
+                                        </li>
+                                        
+
+                                        <li class="list-group-item">
+                                            <span class="fa fa-map-marker" style="width:13px;"></span>
+                                            <strong style="margin-left:5px;">{{OtherDet.CityName}}, {{OtherDet.ProvName}}</strong>
+                                            <span class="badge badge-success">Event Location</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="fa fa-calendar" style="width:13px;"> </span>
+                                            <strong style="margin-left:5px;">{{OtherDet.EventDate}}, </strong>
+                                            <span class="badge badge-success">Event Date</span>
+                                        </li>
+                                        <li class="list-group-item" style="text-align:center">
+                                            <small class="pull-left">Message</small><br />
+                                            <p class="font-bold alert alert-success m-b-sm">
+                                                {{BookDetails.BookMsg}}
+                                            </p>
+
+                                        </li>
+
+                                    </ul>
+
+                                    <hr />
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="termscond" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-file-text-o modal-icon"></i>
+                <h4 class="modal-title">Set Terms and Conditions</h4>
+                <small class="font-bold"></small>
+            </div>
+            <div class="modal-body">
+                    
+                <form class="form-inline"  style="margin-bottom:20px">
+                    <div class="form-group mb-2">
+                        
+                        <h4 >Disallow book cancel :</h4>
+                    </div>
+                    <div class="input-group" > 
+                        <input type="text" ng-model="term.termInp" class="form-control" style="width:50px;text-align:right" ng-keyup="calcDate(term)">
+
+                        <div class="input-group-btn">
+                            <select class="form-control" ng-model="term.termType" ng-init="term.termType='day'" ng-change="calcDate(term)">
+                                <option value="day" ng-selected="true">Days</option>
+                                <option value="week">Weeks</option>
+                                <option value="month">Months</option>
+                                
+                            </select>
+
+                        </div>
+                    </div>
+                   <span class="label label-info">Before event</span>
+                    <div class="pull-right "><text class="form-control font-bold" style="background: #ffe20094;border: 0px;border-radius: 50px;" ng-show="bookterm.CancelDate">{{bookterm.CancelDate}}</text></div>
+                </form>
+
+
+                @*<div style="width:110px;display:table;margin-right:auto;margin-left:auto;margin-bottom:30px;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" style="text-align:right;">
+
+                        <div class="input-group-btn">
+                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="false">Days <span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="#">Days</a></li>
+                                <li><a href="#">Weeks</a></li>
+                                <li><a href="#">Months</a></li>
+                            </ul>
+                        </div>
+                       
+                    </div>
+                    
+
+                </div>*@
+                <p>
+                    <textarea rows="5" ng-required="" ng-model="msg" style="width:100%;display:block;" placeholder="Set your terms and conditions and Suggest meet up date"></textarea>
+                </p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="AcceptBooking(msg)" ng-disabled="!bookterm.CancelDate">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

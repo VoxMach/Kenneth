@@ -1,0 +1,313 @@
+﻿<head>
+    <title>EventAide | Calendar</title>
+</head>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+ <div class="col-md-2">
+     <div class="ibox-content" style="text-align:center">
+        <h3>Legends</h3>
+
+         <ul class="unstyled" >
+             <li style="margin-top:5px;"><small>Weddings</small><span class="label pull-right" style="background:#1ab394;color:#1ab394;">ex</span></li>
+             <li style="margin-top:5px;"><small>Birthdays</small><span class="label pull-right" style="background:#1c84c6;color:#1c84c6">ex</span></li>
+             <li style="margin-top:5px;"><small>Reunions</small><span class="label pull-right" style="background:#af15b3;color:#af15b3">ex</span></li>
+             <li style="margin-top:5px;"><small>Others</small><span class="label pull-right" style="background:orange;color:orange">ex</span></li>
+             <li style="margin-top:5px;"><small>Custom</small><span class="label pull-right" style="background:black;color:black">ex</span></li>
+         </ul>
+     </div>
+ </div>
+<div class=" col-md-10 " >
+    <div class="ibox-content">
+        <div id="calendar"></div>
+    </div>
+    </div>
+
+
+
+    <div class="modal inmodal" id="SendMessage" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceIn">
+                
+                <div class="modal-body">
+                    <div class="ibox" id="InfoBday" ng-show="BdayCounter>0">
+
+                        <div class="ibox-content">
+                            <div class="tab-content">
+                                <div id="contact-1" class="tab-pane active">
+                                    <div class="row m-b-lg">
+                                        <div class="col-lg-12 text-center align-items-center">
+                                            <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                            <div class="m-b-sm">
+                                                <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                                     style="width: 62px;height:62px;">
+                                            </div>
+
+                                            
+                                        </div>
+
+
+                                    </div>
+                                    <div class="client-detail" style="height:300px;">
+                                        <div class="full-height-scroll">
+
+                                            <strong>Birthday Details</strong>
+
+                                            <ul class="list-group clear-list">
+                                                <li class="list-group-item fist-item" style="text-align:center">
+
+                                                    <strong style="color:#dc8806"> {{BdayDet.EventName}}</strong>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-birthday-cake">  </span>
+                                                    <strong style="margin-left:5px;">{{BdayDet.CelebFirstN}} {{BdayDet.CelebLastN}}</strong>
+                                                    <span class="badge badge-success">Celebrant</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-map-marker" style="width:13px;"></span>
+                                                    <strong style="margin-left:5px;">{{BdayDet.CityName}}, {{BdayDet.ProvName}}</strong>
+                                                    <span class="badge badge-success">Event Location</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-calendar" style="width:13px;"> </span>
+                                                    <strong style="margin-left:5px;">{{BdayDet.EventDate}}, </strong>
+                                                    <span class="badge badge-success">Event Date</span>
+                                                </li>
+                                                <li class="list-group-item" style="text-align:center">
+                                                    <small class="pull-left">Booking</small><br />
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start.format()!=BookDetails.end.format()">
+
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}} to {{subtractEndDate(BookDetails.end.format())}}
+                                                    </p>
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start.format()==BookDetails.end.format()">
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}}
+                                                    </p>
+
+                                                </li>
+
+                                            </ul>
+
+                                            <hr />
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox" id="InfoWedding" ng-show="WeddingCounter>0">
+
+                        <div class="ibox-content">
+                            <div class="tab-content">
+                                <div id="contact-1" class="tab-pane active">
+                                    <div class="row m-b-lg">
+                                        <div class="col-lg-12 text-center align-items-center">
+                                            <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                            <div class="m-b-sm">
+                                                <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                                     style="width: 62px;height:62px;">
+                                            </div>
+
+                                           
+                                        </div>
+
+
+                                    </div>
+                                    <div class="client-detail" style="height:300px;">
+                                        <div class="full-height-scroll">
+
+                                            <strong>Wedding Details</strong>
+
+                                            <ul class="list-group clear-list">
+                                                <li class="list-group-item fist-item" style="text-align:center">
+
+                                                    <strong style="color:#dc8806"> {{WedDet.EventName}}</strong>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-male">  </span>
+                                                    <strong style="margin-left:5px;">{{WedDet.BrideFirstN}} {{WedDet.BrideLastN}}</strong>
+                                                    <span class="badge badge-success">Groom</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-female">  </span>
+                                                    <strong style="margin-left:5px;">{{WedDet.GroomFirstN}} {{WedDet.GroomLastN}}</strong>
+                                                    <span class="badge badge-success">Bride</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-map-marker" style="width:13px;"></span>
+                                                    <strong style="margin-left:5px;">{{WedDet.CityName}}, {{WedDet.ProvName}}</strong>
+                                                    <span class="badge badge-success">Event Location</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-calendar" style="width:13px;"> </span>
+                                                    <strong style="margin-left:5px;">{{WedDet.EventDate}}, </strong>
+                                                    <span class="badge badge-success">Event Date</span>
+                                                </li>
+                                                <li class="list-group-item" style="text-align:center">
+                                                    <small class="pull-left">Booking</small><br />
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start!=BookDetails.end">
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}} to {{subtractEndDate(BookDetails.end.format())}}
+                                                    </p>
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start==BookDetails.end">
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}}
+                                                    </p>
+
+                                                </li>
+
+                                            </ul>
+
+                                            <hr />
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox" id="InfoReunion" ng-show="ReunionCounter>0">
+
+                        <div class="ibox-content">
+                            <div class="tab-content">
+                                <div id="contact-1" class="tab-pane active">
+                                    <div class="row m-b-lg">
+                                        <div class="col-lg-12 text-center align-items-center">
+                                            <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                            <div class="m-b-sm">
+                                                <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                                     style="width: 62px;height:62px;">
+                                            </div>
+
+                                           
+                                        </div>
+
+
+                                    </div>
+                                    <div class="client-detail" style="height:300px;">
+                                        <div class="full-height-scroll">
+
+                                            <strong>Reunion Details</strong>
+
+                                            <ul class="list-group clear-list">
+                                                <li class="list-group-item fist-item" style="text-align:center">
+
+                                                    <strong style="color:#dc8806"> {{ReunDet.EventName}}</strong><br />
+                                                    <span style="font-weight:600">{{ReunDet.SchoolName}}</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-users">  </span>
+                                                    <strong style="margin-left:5px;">{{ReunDet.ReunionType}} </strong>
+                                                    <span class="badge badge-success vertical-align">Type</span>
+                                                </li>
+
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-map-marker" style="width:13px;"></span>
+                                                    <strong style="margin-left:5px;">{{ReunDet.CityName}}, {{ReunDet.ProvName}}</strong>
+                                                    <span class="badge badge-success">Event Location</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-calendar" style="width:13px;"> </span>
+                                                    <strong style="margin-left:5px;">{{ReunDet.EventDate}}, </strong>
+                                                    <span class="badge badge-success">Event Date</span>
+                                                </li>
+                                                <li class="list-group-item" style="text-align:center">
+                                                    <small class="pull-left">Booking</small><br />
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start!=BookDetails.end">
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}} to {{subtractEndDate(BookDetails.end.format())}}
+                                                    </p>
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start==BookDetails.end">
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}}
+                                                    </p>
+
+                                                </li>
+
+                                            </ul>
+
+                                            <hr />
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox" id="InfoOther" ng-show="OtherCounter>0">
+
+                        <div class="ibox-content">
+                            <div class="tab-content">
+                                <div id="contact-1" class="tab-pane active">
+                                    <div class="row m-b-lg">
+                                        <div class="col-lg-12 text-center align-items-center">
+                                            <h2>{{BookDetails.userfname}} {{BookDetails.userlname}}</h2>
+
+                                            <div class="m-b-sm">
+                                                <img alt="image" class="img-circle" ng-src="{{BookDetails.userpic}}"
+                                                     style="width: 62px;height:62px;">
+                                            </div>
+
+                                            
+                                        </div>
+
+
+                                    </div>
+                                    <div class="client-detail" style="height:300px;">
+                                        <div class="full-height-scroll">
+
+                                            <strong>Party Details</strong>
+
+                                            <ul class="list-group clear-list">
+                                                <li class="list-group-item fist-item" style="text-align:center">
+
+                                                    <strong style="color:#dc8806"> {{OtherDet.EventName}}</strong><br />
+
+                                                </li>
+
+
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-map-marker" style="width:13px;"></span>
+                                                    <strong style="margin-left:5px;">{{OtherDet.CityName}}, {{OtherDet.ProvName}}</strong>
+                                                    <span class="badge badge-success">Event Location</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="fa fa-calendar" style="width:13px;"> </span>
+                                                    <strong style="margin-left:5px;">{{OtherDet.EventDate}}, </strong>
+                                                    <span class="badge badge-success">Event Date</span>
+                                                </li>
+                                                <li class="list-group-item" style="text-align:center">
+                                                    <small class="pull-left">Booking</small><br />
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start!=BookDetails.end">
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}} to {{subtractEndDate(BookDetails.end.format())}}
+                                                    </p>
+                                                    <p class="font-bold alert alert-success m-b-sm" ng-show="BookDetails.start==BookDetails.end">
+                                                        Booked on {{convertJsonDate(BookDetails.start.format())}}
+                                                    </p>
+
+                                                </li>
+
+                                            </ul>
+
+                                            <hr />
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+</div>

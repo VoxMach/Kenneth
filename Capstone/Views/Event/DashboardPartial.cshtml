@@ -1,0 +1,148 @@
+﻿@{if (Session["login"] == null)
+{
+    Response.Redirect("~/LandingPage/Index");
+}
+else if (Convert.ToInt32(Session["login"]) == 2)
+{
+    Response.Redirect("~/LandingPage/Index2");
+}
+else if (Session["Event"] == null)
+{
+    Response.Redirect("../Event/Index");
+}
+}
+<div class="animated fadeIn">
+
+    <div class="col-md-12" id="loadSpinner">
+
+        <div class="spiner-example" style="padding-top:200px;">
+            <div class="sk-spinner sk-spinner-cube-grid" style="width:80px;height:80px;">
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+                <div class="sk-cube"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-xs-12" style="display:none" id="dashboardContent">
+        <div class="row  border-bottom white-bg dashboard-header">
+
+            <div class="col-sm-12">
+                <h4>Welcome to EventAide</h4>
+            </div>
+            <div class="col-sm-12" style="text-align:center;">
+                <h1>
+                    {{DateTillEvent}}
+
+                    until
+
+                    <strong style="font-family:cursive">{{EventDet.EventName}}</strong>
+                </h1>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    <div class="row" style="display:none" id="dashboardContent2">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Checklist Status</h5><span class="label label-primary" style="font-size:14px">{{CheckPct}}%</span>
+
+                            </div>
+                            <a href="../Event/Checklist" onclick="setActive(2)">
+                                <div class="ibox-content" style="background:#eae7e3">
+                                    <div id="ChecklistChart"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Your Event Details</h5> <span class="label label-primary">IN+</span>
+
+                            </div>
+                            <div class="ibox-content" style="background:#eae7e3">
+                                <div>
+                                    <h4 style="margin-bottom:0px;">
+                                        <span class="badge badge-info">Celebrant</span><strong style="color:#a99d02;margin-left:10px;">{{EventDet.CelebFirstN}} {{EventDet.CelebLastN}}</strong>
+                                    </h4>
+                                </div>
+
+                                <div>
+                                    <h4 style="margin-bottom:0px;">
+                                        <span class="fa fa-calendar" style="margin-left:20px;"></span><strong style="color:#a99d02;margin-left:40px;">{{EventDet.EventDate}}</strong>
+                                    </h4>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom:0px;">
+                                        <span class="fa fa-map-marker" style="margin-left:20px;"></span><strong style="color:#a99d02;margin-left:45px;">{{EventDet.CityName}}, {{EventDet.ProvName}}</strong>
+                                    </h4>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4" >
+                        <a href="../Vendor/Bookmarks">
+                            <div class="widget yellow-bg p-lg text-center">
+                                <div class="m-b-md">
+                                    <i class="fa fa-bookmark fa-4x"></i>
+                                    <h1 class="m-xs">{{bookmarkCount}}</h1>
+                                    <h3 class="font-bold no-margins">
+                                        Bookmarked
+                                    </h3>
+                                    <small>Vendors</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a href="./Event/Budget">
+                            <div class="widget red-bg p-lg text-center" style="background:#069437">
+                                <div class="m-b-md">
+                                    <i class="fa fa-money fa-4x"></i>
+                                    <h1 class="m-xs">{{RemainBudget}}</h1>
+                                    <h3 class="font-bold no-margins">
+                                        Remaining Budget
+                                    </h3>
+                                    <small><u>Manage budgeter</u></small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    </div>
+

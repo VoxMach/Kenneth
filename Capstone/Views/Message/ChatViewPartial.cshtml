@@ -1,0 +1,77 @@
+﻿
+<div class="animated fadeIn">
+    <div class="ibox" style="margin-bottom:0px">
+        <div class="ibox-title" style="font-size:13px;font-weight:bold;background: #bbe2e1;">
+            Conversation <span ng-hide="SetConvo.Name==undefined">with {{SetConvo.Name}}</span>
+        </div>
+     </div>
+
+
+                            <div class="row">
+
+                            <div class="col-md-9 ">
+                                <div>
+                                   
+                                    <div class="chat-discussion"  id="chatDiv{{ChatDivID}}" style="background:#b6b77e">
+
+                                        <div ng-init="setScrollMessage($index)"   ng-class="{'chat-message right  animated fadeInUp':convo.RecieverID == userID,'chat-message left  animated fadeInUp':convo.SenderID == userID}" ng-style="{'background':(convo.SenderID == userID)?'#c9d7dc54':'','border-radius':(convo.SenderID == userID)?'100px':''}" ng-repeat="convo in MessageList | orderBy: '-'">
+                                            <img class="message-avatar" ng-src="{{setImg(convo)}}" />
+                                            <div class="message" style="border-radius:20px;">
+                                                <a class="message-author" href="#" style="font-weight:bold;">{{setName(convo)}}</a>
+                                                <span class="message-date">{{convo.Date}}</span>
+                                                <span class="message-content">{{convo.Msg}}</span>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+                                    <div class="row inline">
+                                        
+                                        <div id="messageBtns" class="input-group" style="margin-top:5px;padding-left:15px;padding-right:15px;">
+                                            <span class="input-group-btn">
+                                                <button  ng-click="deleteMsg()" ng-disabled="Msg.RecieverID == 0" class="btn btn-danger btn-flat" type="button"><span class="fa fa-trash" ></span></button>
+                                            </span>
+                                            <input type="text" class="form-control" id="message" ng-model="message" ng-keydown="saveMessages($event, '')">
+                                            <span class="input-group-btn">
+                                                <button ng-click="newMsg()" ng-disabled="Msg.RecieverID == 0" class="btn btn-info btn-flat" type="button">Send</button>
+                                            </span>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="chat-users">
+                                    <div style="font-size: 16px;font-weight: bold;color: #758402;text-align: center; margin-bottom:15px;">EventAide Messenger</div>
+
+                                    <div class="users-list">
+
+
+
+
+
+
+                                        <div ng-class="{'chat-user customchat activeChat':contact.isActive==1,'chat-user customchat':contact.isActive==0}"
+                                             ng-repeat="contact in Contacts|orderBy: '-prio'"
+                                             ng-click="setChatmate(contact)"
+                                             ng-style="{'background':(contact.MsgStatus=='unseen')?'#c1bcfb':''}">
+
+                                            <img class="chat-avatar img-circle" ng-src="{{contact.dispImg}}" alt="" style="width:36px;">
+                                            <span class="label label-primary pull-right" ng-show="contact.Status == 'Online'" style="margin-top:11px;">{{contact.Status}}</span>
+                                            <div class="chat-user-name">
+                                                <a href="#" style="font-weight:bold">{{contact.Name}}</a>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+    </div>
+               

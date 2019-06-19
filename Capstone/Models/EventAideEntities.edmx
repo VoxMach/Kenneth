@@ -1,0 +1,769 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EventAideModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_bday">
+          <Key>
+            <PropertyRef Name="BirthdayID" />
+          </Key>
+          <Property Name="BirthdayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="50" />
+          <Property Name="CelebFirstN" Type="varchar" MaxLength="50" />
+          <Property Name="CelebLastN" Type="varchar" MaxLength="50" />
+          <Property Name="CurAge" Type="int" />
+          <Property Name="EventDate" Type="date" />
+          <Property Name="ProvID" Type="int" />
+          <Property Name="CityID" Type="int" />
+          <Property Name="EstimatedBudget" Type="int" />
+          <Property Name="userID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_bookings">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="eventTitle" Type="varchar" MaxLength="50" />
+          <Property Name="BookMsg" Type="varchar(max)" />
+          <Property Name="BookDate" Type="varchar" MaxLength="50" />
+          <Property Name="BookDateEnd" Type="varchar" MaxLength="50" />
+          <Property Name="eventID" Type="int" />
+          <Property Name="eventType" Type="varchar" MaxLength="10" />
+          <Property Name="userID" Type="int" />
+          <Property Name="companyID" Type="int" />
+          <Property Name="BookStatus" Type="int" />
+          <Property Name="BookSched" Type="varchar" MaxLength="100" />
+          <Property Name="CancelDate" Type="varchar" MaxLength="50" />
+          <Property Name="Terms" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_bookmarks">
+          <Key>
+            <PropertyRef Name="BookmarkID" />
+          </Key>
+          <Property Name="BookmarkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="userID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_budgeter">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceName" Type="varchar(max)" />
+          <Property Name="BookCompany" Type="int" />
+          <Property Name="CostEstimate" Type="int" />
+          <Property Name="Paid" Type="int" />
+          <Property Name="eventID" Type="int" />
+          <Property Name="eventType" Type="varchar" MaxLength="50" />
+          <Property Name="userID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_checklist">
+          <Key>
+            <PropertyRef Name="ChecklistID" />
+          </Key>
+          <Property Name="ChecklistID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskID" Type="int" />
+          <Property Name="IsFinished" Type="int" />
+          <Property Name="userID" Type="int" />
+          <Property Name="eventType" Type="varchar" MaxLength="50" />
+          <Property Name="eventID" Type="int" />
+          <Property Name="notes" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_cities">
+          <Key>
+            <PropertyRef Name="cityID" />
+          </Key>
+          <Property Name="cityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cityName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="provinceID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="80" />
+          <Property Name="Sypnosis" Type="varchar(max)" />
+          <Property Name="Province" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="ServiceType" Type="int" />
+          <Property Name="ContactNo" Type="varchar" MaxLength="50" />
+          <Property Name="StartPrice" Type="int" />
+          <Property Name="EndPrice" Type="int" />
+          <Property Name="userID" Type="int" />
+          <Property Name="PageID" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tbl_dispImg">
+          <Key>
+            <PropertyRef Name="ImgID" />
+          </Key>
+          <Property Name="ImgID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FilePath" Type="varchar(max)" />
+          <Property Name="CompanyID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_gallery">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileName" Type="varchar(max)" />
+          <Property Name="CompanyID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_messages">
+          <Key>
+            <PropertyRef Name="MsgID" />
+          </Key>
+          <Property Name="MsgID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Msg" Type="varchar(max)" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="SenderID" Type="int" />
+          <Property Name="RecieverID" Type="int" />
+          <Property Name="ConversationToken" Type="varchar" MaxLength="50" />
+          <Property Name="MessageStatus" Type="varchar" MaxLength="50" />
+          <Property Name="isMobile" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_notification">
+          <Key>
+            <PropertyRef Name="notifID" />
+          </Key>
+          <Property Name="notifID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="notifContent" Type="varchar(max)" />
+          <Property Name="userID" Type="int" />
+          <Property Name="notifDate" Type="datetime" />
+          <Property Name="seen" Type="int" />
+          <Property Name="type" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_otherParty">
+          <Key>
+            <PropertyRef Name="PartyID" />
+          </Key>
+          <Property Name="PartyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="50" />
+          <Property Name="EventDate" Type="date" />
+          <Property Name="ProvID" Type="int" />
+          <Property Name="CityID" Type="int" />
+          <Property Name="EstimatedBudget" Type="int" />
+          <Property Name="userID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_provinces">
+          <Key>
+            <PropertyRef Name="provinceID" />
+          </Key>
+          <Property Name="provinceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_rating">
+          <Key>
+            <PropertyRef Name="RateID" />
+          </Key>
+          <Property Name="RateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Rating" Type="int" />
+          <Property Name="Comment" Type="varchar(max)" />
+          <Property Name="DateRated" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="userID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_reunion">
+          <Key>
+            <PropertyRef Name="ReunionID" />
+          </Key>
+          <Property Name="ReunionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="50" />
+          <Property Name="EventDate" Type="date" />
+          <Property Name="ProvID" Type="int" />
+          <Property Name="CityID" Type="int" />
+          <Property Name="EstimatedBudget" Type="int" />
+          <Property Name="ReunionType" Type="varchar" MaxLength="50" />
+          <Property Name="SchoolName" Type="varchar" MaxLength="50" />
+          <Property Name="Class" Type="int" />
+          <Property Name="userID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_services">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tbl_Task">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskName" Type="varchar" MaxLength="200" />
+          <Property Name="EventType" Type="varchar" MaxLength="50" />
+          <Property Name="ServiceID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="middlename" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="profpath" Type="varchar(max)" Nullable="false" />
+          <Property Name="usertype" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="connectionID" Type="varchar(max)" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_wedding">
+          <Key>
+            <PropertyRef Name="WeddingID" />
+          </Key>
+          <Property Name="WeddingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GroomFirstN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GroomLastN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BrideFirstN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BrideLastN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EventDate" Type="date" Nullable="false" />
+          <Property Name="ProvinceID" Type="int" Nullable="false" />
+          <Property Name="CityID" Type="int" Nullable="false" />
+          <Property Name="EstimatedBudget" Type="int" Nullable="false" />
+          <Property Name="userID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="EventAideModelStoreContainer">
+          <EntitySet Name="tbl_bday" EntityType="Self.tbl_bday" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_bookings" EntityType="Self.tbl_bookings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_bookmarks" EntityType="Self.tbl_bookmarks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_budgeter" EntityType="Self.tbl_budgeter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_checklist" EntityType="Self.tbl_checklist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_cities" EntityType="Self.tbl_cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_company" EntityType="Self.tbl_company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_dispImg" EntityType="Self.tbl_dispImg" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_gallery" EntityType="Self.tbl_gallery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_messages" EntityType="Self.tbl_messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_notification" EntityType="Self.tbl_notification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_otherParty" EntityType="Self.tbl_otherParty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_provinces" EntityType="Self.tbl_provinces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_rating" EntityType="Self.tbl_rating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_reunion" EntityType="Self.tbl_reunion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_services" EntityType="Self.tbl_services" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Task" EntityType="Self.tbl_Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_wedding" EntityType="Self.tbl_wedding" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EventAideModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_bday">
+          <Key>
+            <PropertyRef Name="BirthdayID" />
+          </Key>
+          <Property Name="BirthdayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CelebFirstN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CelebLastN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CurAge" Type="Int32" />
+          <Property Name="EventDate" Type="DateTime" Precision="0" />
+          <Property Name="ProvID" Type="Int32" />
+          <Property Name="CityID" Type="Int32" />
+          <Property Name="EstimatedBudget" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_bookings">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eventTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BookMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BookDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BookDateEnd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="eventID" Type="Int32" />
+          <Property Name="eventType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="companyID" Type="Int32" />
+          <Property Name="BookStatus" Type="Int32" />
+          <Property Name="BookSched" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CancelDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Terms" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_bookmarks">
+          <Key>
+            <PropertyRef Name="BookmarkID" />
+          </Key>
+          <Property Name="BookmarkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_budgeter">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BookCompany" Type="Int32" />
+          <Property Name="CostEstimate" Type="Int32" />
+          <Property Name="Paid" Type="Int32" />
+          <Property Name="eventID" Type="Int32" />
+          <Property Name="eventType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_checklist">
+          <Key>
+            <PropertyRef Name="ChecklistID" />
+          </Key>
+          <Property Name="ChecklistID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskID" Type="Int32" />
+          <Property Name="IsFinished" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="eventType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="eventID" Type="Int32" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_cities">
+          <Key>
+            <PropertyRef Name="cityID" />
+          </Key>
+          <Property Name="cityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="provinceID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Sypnosis" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceType" Type="Int32" />
+          <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartPrice" Type="Int32" />
+          <Property Name="EndPrice" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="PageID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_dispImg">
+          <Key>
+            <PropertyRef Name="ImgID" />
+          </Key>
+          <Property Name="ImgID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_gallery">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_messages">
+          <Key>
+            <PropertyRef Name="MsgID" />
+          </Key>
+          <Property Name="MsgID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="SenderID" Type="Int32" />
+          <Property Name="RecieverID" Type="Int32" />
+          <Property Name="ConversationToken" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MessageStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isMobile" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_notification">
+          <Key>
+            <PropertyRef Name="notifID" />
+          </Key>
+          <Property Name="notifID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="notifContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="notifDate" Type="DateTime" Precision="3" />
+          <Property Name="seen" Type="Int32" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_otherParty">
+          <Key>
+            <PropertyRef Name="PartyID" />
+          </Key>
+          <Property Name="PartyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EventDate" Type="DateTime" Precision="0" />
+          <Property Name="ProvID" Type="Int32" />
+          <Property Name="CityID" Type="Int32" />
+          <Property Name="EstimatedBudget" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_provinces">
+          <Key>
+            <PropertyRef Name="provinceID" />
+          </Key>
+          <Property Name="provinceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_rating">
+          <Key>
+            <PropertyRef Name="RateID" />
+          </Key>
+          <Property Name="RateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rating" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateRated" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_reunion">
+          <Key>
+            <PropertyRef Name="ReunionID" />
+          </Key>
+          <Property Name="ReunionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EventDate" Type="DateTime" Precision="0" />
+          <Property Name="ProvID" Type="Int32" />
+          <Property Name="CityID" Type="Int32" />
+          <Property Name="EstimatedBudget" Type="Int32" />
+          <Property Name="ReunionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SchoolName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Class" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_services">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_Task">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="EventType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="middlename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="profpath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usertype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="connectionID" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_wedding">
+          <Key>
+            <PropertyRef Name="WeddingID" />
+          </Key>
+          <Property Name="WeddingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroomFirstN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroomLastN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BrideFirstN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BrideLastN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EventDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ProvinceID" Type="Int32" Nullable="false" />
+          <Property Name="CityID" Type="Int32" Nullable="false" />
+          <Property Name="EstimatedBudget" Type="Int32" Nullable="false" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="EventAideEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_bday" EntityType="Self.tbl_bday" />
+          <EntitySet Name="tbl_bookings" EntityType="Self.tbl_bookings" />
+          <EntitySet Name="tbl_bookmarks" EntityType="Self.tbl_bookmarks" />
+          <EntitySet Name="tbl_budgeter" EntityType="Self.tbl_budgeter" />
+          <EntitySet Name="tbl_checklist" EntityType="Self.tbl_checklist" />
+          <EntitySet Name="tbl_cities" EntityType="Self.tbl_cities" />
+          <EntitySet Name="tbl_company" EntityType="Self.tbl_company" />
+          <EntitySet Name="tbl_dispImg" EntityType="Self.tbl_dispImg" />
+          <EntitySet Name="tbl_gallery" EntityType="Self.tbl_gallery" />
+          <EntitySet Name="tbl_messages" EntityType="Self.tbl_messages" />
+          <EntitySet Name="tbl_notification" EntityType="Self.tbl_notification" />
+          <EntitySet Name="tbl_otherParty" EntityType="Self.tbl_otherParty" />
+          <EntitySet Name="tbl_provinces" EntityType="Self.tbl_provinces" />
+          <EntitySet Name="tbl_rating" EntityType="Self.tbl_rating" />
+          <EntitySet Name="tbl_reunion" EntityType="Self.tbl_reunion" />
+          <EntitySet Name="tbl_services" EntityType="Self.tbl_services" />
+          <EntitySet Name="tbl_Task" EntityType="Self.tbl_Task" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" />
+          <EntitySet Name="tbl_wedding" EntityType="Self.tbl_wedding" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EventAideModelStoreContainer" CdmEntityContainer="EventAideEntities">
+          <EntitySetMapping Name="tbl_bday">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_bday">
+              <MappingFragment StoreEntitySet="tbl_bday">
+                <ScalarProperty Name="BirthdayID" ColumnName="BirthdayID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="CelebFirstN" ColumnName="CelebFirstN" />
+                <ScalarProperty Name="CelebLastN" ColumnName="CelebLastN" />
+                <ScalarProperty Name="CurAge" ColumnName="CurAge" />
+                <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+                <ScalarProperty Name="ProvID" ColumnName="ProvID" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="EstimatedBudget" ColumnName="EstimatedBudget" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_bookings">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_bookings">
+              <MappingFragment StoreEntitySet="tbl_bookings">
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="eventTitle" ColumnName="eventTitle" />
+                <ScalarProperty Name="BookMsg" ColumnName="BookMsg" />
+                <ScalarProperty Name="BookDate" ColumnName="BookDate" />
+                <ScalarProperty Name="BookDateEnd" ColumnName="BookDateEnd" />
+                <ScalarProperty Name="eventID" ColumnName="eventID" />
+                <ScalarProperty Name="eventType" ColumnName="eventType" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="companyID" ColumnName="companyID" />
+                <ScalarProperty Name="BookStatus" ColumnName="BookStatus" />
+                <ScalarProperty Name="BookSched" ColumnName="BookSched" />
+                <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
+                <ScalarProperty Name="Terms" ColumnName="Terms" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_bookmarks">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_bookmarks">
+              <MappingFragment StoreEntitySet="tbl_bookmarks">
+                <ScalarProperty Name="BookmarkID" ColumnName="BookmarkID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_budgeter">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_budgeter">
+              <MappingFragment StoreEntitySet="tbl_budgeter">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="BookCompany" ColumnName="BookCompany" />
+                <ScalarProperty Name="CostEstimate" ColumnName="CostEstimate" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="eventID" ColumnName="eventID" />
+                <ScalarProperty Name="eventType" ColumnName="eventType" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_checklist">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_checklist">
+              <MappingFragment StoreEntitySet="tbl_checklist">
+                <ScalarProperty Name="ChecklistID" ColumnName="ChecklistID" />
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="IsFinished" ColumnName="IsFinished" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="eventType" ColumnName="eventType" />
+                <ScalarProperty Name="eventID" ColumnName="eventID" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_cities">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_cities">
+              <MappingFragment StoreEntitySet="tbl_cities">
+                <ScalarProperty Name="cityID" ColumnName="cityID" />
+                <ScalarProperty Name="cityName" ColumnName="cityName" />
+                <ScalarProperty Name="provinceID" ColumnName="provinceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_company">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_company">
+              <MappingFragment StoreEntitySet="tbl_company">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Sypnosis" ColumnName="Sypnosis" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="StartPrice" ColumnName="StartPrice" />
+                <ScalarProperty Name="EndPrice" ColumnName="EndPrice" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="PageID" ColumnName="PageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_dispImg">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_dispImg">
+              <MappingFragment StoreEntitySet="tbl_dispImg">
+                <ScalarProperty Name="ImgID" ColumnName="ImgID" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_gallery">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_gallery">
+              <MappingFragment StoreEntitySet="tbl_gallery">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_messages">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_messages">
+              <MappingFragment StoreEntitySet="tbl_messages">
+                <ScalarProperty Name="MsgID" ColumnName="MsgID" />
+                <ScalarProperty Name="Msg" ColumnName="Msg" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="RecieverID" ColumnName="RecieverID" />
+                <ScalarProperty Name="ConversationToken" ColumnName="ConversationToken" />
+                <ScalarProperty Name="MessageStatus" ColumnName="MessageStatus" />
+                <ScalarProperty Name="isMobile" ColumnName="isMobile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_notification">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_notification">
+              <MappingFragment StoreEntitySet="tbl_notification">
+                <ScalarProperty Name="notifID" ColumnName="notifID" />
+                <ScalarProperty Name="notifContent" ColumnName="notifContent" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="notifDate" ColumnName="notifDate" />
+                <ScalarProperty Name="seen" ColumnName="seen" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_otherParty">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_otherParty">
+              <MappingFragment StoreEntitySet="tbl_otherParty">
+                <ScalarProperty Name="PartyID" ColumnName="PartyID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+                <ScalarProperty Name="ProvID" ColumnName="ProvID" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="EstimatedBudget" ColumnName="EstimatedBudget" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_provinces">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_provinces">
+              <MappingFragment StoreEntitySet="tbl_provinces">
+                <ScalarProperty Name="provinceID" ColumnName="provinceID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_rating">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_rating">
+              <MappingFragment StoreEntitySet="tbl_rating">
+                <ScalarProperty Name="RateID" ColumnName="RateID" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="DateRated" ColumnName="DateRated" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_reunion">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_reunion">
+              <MappingFragment StoreEntitySet="tbl_reunion">
+                <ScalarProperty Name="ReunionID" ColumnName="ReunionID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+                <ScalarProperty Name="ProvID" ColumnName="ProvID" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="EstimatedBudget" ColumnName="EstimatedBudget" />
+                <ScalarProperty Name="ReunionType" ColumnName="ReunionType" />
+                <ScalarProperty Name="SchoolName" ColumnName="SchoolName" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_services">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_services">
+              <MappingFragment StoreEntitySet="tbl_services">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Task">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_Task">
+              <MappingFragment StoreEntitySet="tbl_Task">
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_user">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_user">
+              <MappingFragment StoreEntitySet="tbl_user">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="middlename" ColumnName="middlename" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="profpath" ColumnName="profpath" />
+                <ScalarProperty Name="usertype" ColumnName="usertype" />
+                <ScalarProperty Name="connectionID" ColumnName="connectionID" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_wedding">
+            <EntityTypeMapping TypeName="EventAideModel.tbl_wedding">
+              <MappingFragment StoreEntitySet="tbl_wedding">
+                <ScalarProperty Name="WeddingID" ColumnName="WeddingID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="GroomFirstN" ColumnName="GroomFirstN" />
+                <ScalarProperty Name="GroomLastN" ColumnName="GroomLastN" />
+                <ScalarProperty Name="BrideFirstN" ColumnName="BrideFirstN" />
+                <ScalarProperty Name="BrideLastN" ColumnName="BrideLastN" />
+                <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="EstimatedBudget" ColumnName="EstimatedBudget" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

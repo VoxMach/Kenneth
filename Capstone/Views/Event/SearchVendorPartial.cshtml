@@ -1,0 +1,810 @@
+﻿@{if (Session["login"] == null)
+{
+    Response.Redirect("~/LandingPage/Index");
+}
+else if (Convert.ToInt32(Session["login"]) == 2)
+{
+    Response.Redirect("~/LandingPage/Index2");
+}
+else if (Session["Event"] == null)
+{
+    Response.Redirect("../Event/Index");
+}
+}
+
+<head>
+    <title>EventAide | Vendors</title>
+</head>
+<div class="col-md-12" id="loadSpinner">
+
+    <div class="spiner-example" style="padding-top:200px;">
+        <div class="sk-spinner sk-spinner-cube-grid" style="width:80px;height:80px;">
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+        </div>
+    </div>
+
+</div>
+<div class="animated fadeIn" style="display:none" id="searchContent">
+
+
+    <div class="col-xs-12">
+
+        <div class="row  border-bottom white-bg dashboard-header">
+
+            <div class="col-sm-3">
+                <h2 style="font-weight: bold;">
+                    Search Vendor
+                </h2>
+
+
+            </div>
+
+            <div class="col-lg-12" ng-hide="hideFilt">
+                <div class="ibox float-e-margins">
+
+                    <div class="ibox-content" style="padding-bottom:0px;">
+                        <div class="defmsg" style="margin-bottom:10px;"> Find vendors suited to your taste</div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <b>Choose Vendor Category</b>
+                        <div class="form-group">
+                            <select ng-model="ServiceType" ng-change="SelChange(ServiceType)" class="form-control" ng-options="y.ServiceName for (x, y) in ServiceList" style="font-size:19px;font-weight:600;padding:0px 12px 0px"></select>
+                        </div>
+                        <div role="form" class="form-inline">
+                            <label><h3> <span class="fa fa-map-marker"></span></h3></label>
+                            <div class="form-group">
+
+                                <select ng-model="Prov" name="Province"  class="form-control ng-touched ng-dirty ng-valid-parse ng-pristine ng-empty ng-untouched ng-invalid ng-invalid-required" ng-hide="true" required="" ng-options="y.name for (x, y) in province" ng-change="provChange(Prov)" style="font-size:16px;font-weight:600;padding:0px 12px 0px;width:190px;"><option value="?" selected="selected"></option></select>
+                            </div>
+                            <div class="form-group">
+                                <select ng-model="City" name="City" class="form-control ng-pristine ng-empty ng-touched ng-untouched ng-invalid ng-invalid-required" required="" ng-disabled="typeSelected==0" ng-options="y.cityName for (x, y) in city" ng-change="cityChange(City)" style="font-size:16px;font-weight:600;padding:0px 12px 0px;width:160px;"><option value="?" selected="selected"></option></select>
+                            </div>
+                          @*  <button class="btn btn-sm btn-primary pull-right m-t-n-xs" ng-click="clearFilt()" style="margin:0px; "><span class="fa fa-sliders" style="padding-right:10px"></span><strong>Clear Filters</strong></button>*@
+                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" ng-click="searchv()" style="margin:0px; margin-right:5px;"><span class="fa fa-search" style="padding-right:10px"></span><strong>Search</strong></button>
+
+                        </div>
+
+                        <h2 style="font-weight:bold" ng-show="!showprov">{{CompanyList.length}} Vendor(s) Found</h2>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight" ng-hide="Selection == 0">
+                
+                @*<div class="col-lg-12" ng-hide="Selection == 0 || ShowVendorInfo == 1">
+                    <b>Choose Vendor Category</b>
+                    <div class="form-group">
+                        <select ng-model="ServiceType" ng-change="SelChange(ServiceType)" class="form-control" ng-options="y.ServiceName for (x, y) in ServiceList" style="font-size:19px;font-weight:600;padding:0px 12px 0px"></select>
+                        <div role="form" class="form-inline">
+                            <label><h3> <span class="fa fa-map-marker"></span>Location</h3></label>
+                            <div class="form-group">
+
+                                <select ng-model="Prov" name="Province" class="form-control ng-touched ng-dirty ng-valid-parse ng-pristine ng-empty ng-untouched ng-invalid ng-invalid-required" required="" ng-options="y.name for (x, y) in province" ng-change="provChange(Prov)" style="font-size:16px;font-weight:600;padding:0px 12px 0px;width:190px;"><option value="?" selected="selected"></option></select>
+                            </div>
+                            <div class="form-group">
+                                <select ng-model="City" name="City" class="form-control ng-pristine ng-empty ng-touched ng-untouched ng-invalid ng-invalid-required" required="" ng-disabled="city.length==0" ng-options="y.cityName for (x, y) in city" ng-change="cityChange(City)" style="font-size:16px;font-weight:600;padding:0px 12px 0px;width:160px;"><option value="?" selected="selected"></option></select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <h2 style="font-weight:bold">{{CompanyList.length}} Vendor(s) Found</h2>
+
+                </div>*@
+                <div ng-repeat="ctgry in CompanyList"  ng-if="$index % 4 == 0" class="row" ng-hide="ShowVendorInfo==1">
+                    <div class="col-md-3" ng-hide="($index)>=CompanyList.length">
+                        <div class="ibox">
+                            <div class="ibox-content product-box">
+
+                                <div class="">
+                                    
+                                   <img ng-src="{{CompanyList[$index].FilePath}}" style="width:100%;height:200px;"/>
+                                </div>
+                                <div class="product-desc">
+                                    <span class="product-price">
+                                        ₱{{CompanyList[$index].EndPrice}}
+                                    </span>
+                                   
+                                    <small class="text-muted">{{CompanyList[$index].ServiceName}}</small>
+                                    <div>
+                                        <div ng-show="!CompanyList[$index].RateTotal">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+                                        <div ng-show="CompanyList[$index].RateTotal/CompanyList[$index].RateCounter >= 1 && CompanyList[$index].RateTotal/CompanyList[$index].RateCounter <2  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index].RateTotal/CompanyList[$index].RateCounter >= 2 && CompanyList[$index].RateTotal/CompanyList[$index].RateCounter <3  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index].RateTotal/CompanyList[$index].RateCounter >= 3 && CompanyList[$index].RateTotal/CompanyList[$index].RateCounter <4  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index].RateTotal/CompanyList[$index].RateCounter >= 4 && CompanyList[$index].RateTotal/CompanyList[$index].RateCounter <5  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index].RateTotal/CompanyList[$index].RateCounter == 5">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                        </div>
+                                        <span class="small" ng-show="CompanyList[$index].RateTotal"> Rate by <strong> {{CompanyList[$index].RateCounter}} </strong> client(s)</span>
+                                        <span class="small" ng-hide="CompanyList[$index].RateTotal"> <strong> Unrated </strong></span>
+                                    </div>
+
+                                    @*<div class="">
+                                        <span ng-class="{'fa fa-star checked': CompanyList[$index].TotalRate >= 1,'fa fa-star ':  CompanyList[$index].TotalRate < 1}"></span>
+                                        <span ng-class="{'fa fa-star checked': CompanyList[$index].TotalRate >= 2,'fa fa-star ':  CompanyList[$index].TotalRate < 2}"></span>
+                                        <span ng-class="{'fa fa-star checked': CompanyList[$index].TotalRate >= 3,'fa fa-star ':  CompanyList[$index].TotalRate < 3}"></span>
+                                        <span ng-class="{'fa fa-star checked': CompanyList[$index].TotalRate >= 4,'fa fa-star ':  CompanyList[$index].TotalRate < 4}"></span>
+                                        <span ng-class="{'fa fa-star checked': CompanyList[$index].TotalRate >= 5,'fa fa-star ':  CompanyList[$index].TotalRate < 5}"></span>*@
+                                       
+                                    @*</div>*@
+                                    <a class="product-name" style="margin-bottom:0px;"> {{CompanyList[$index].CompanyName}}</a>
+                                    <div class="small m-t-xs" style="font-weight:bold;margin-top:0px;">{{CompanyList[$index].City}}, {{CompanyList[$index].Province}}</div>
+
+
+                                    <div class="small m-t-xs" style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">
+                                        
+                                        {{CompanyList[$index].Sypnosis}}
+                                    </div>
+                                    <div class="m-t text-righ">
+
+                                        <button class="btn btn-xs btn-outline btn-primary" ng-click="VendorInfo(CompanyList[$index])">Info <i class="fa fa-long-arrow-right"></i> </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-hide="($index+1)>=CompanyList.length">
+                        <div class="ibox">
+                            <div class="ibox-content product-box">
+
+                                <div class="">
+                                    
+                                    <img ng-src="{{CompanyList[$index+1].FilePath}}" style="width:100%;height:200px;" />
+                                </div>
+                                <div class="product-desc">
+                                    <span class="product-price">
+                                        ₱{{CompanyList[$index+1].EndPrice}}
+                                    </span>
+                                    <small class="text-muted">{{CompanyList[$index+1].ServiceName}}</small>
+                                    <div>
+                                       
+                                        <div ng-show="!CompanyList[$index+1].RateTotal">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+                                        <div ng-show="CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter >= 1 && CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter <2  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter >= 2 && CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter <3  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter >= 3 && CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter <4  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter >= 4 && CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter <5  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div ng-show="CompanyList[$index+1].RateTotal/CompanyList[$index+1].RateCounter == 5">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                        </div>
+                                        <span class="small" ng-show="CompanyList[$index+1].RateTotal"> Rate by <strong> {{CompanyList[$index+1].RateCounter}} </strong> client(s)</span>
+                                        <span class="small" ng-hide="CompanyList[$index+1].RateTotal"><strong> Unrated </strong></span>
+
+
+
+                                        <a href="#" style="margin-bottom:0px;" class="product-name"> {{CompanyList[$index+1].CompanyName}}</a>
+                                        <div class="small m-t-xs" style="font-weight:bold;margin-top:0px;">{{CompanyList[$index+1].City}}, {{CompanyList[$index+1].Province}}</div>
+
+
+
+                                        <div class="small m-t-xs" style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">
+                                            {{CompanyList[$index+1].Sypnosis}}
+                                        </div>
+                                        <div class="m-t text-righ">
+
+                                            <button class="btn btn-xs btn-outline btn-primary" ng-click="VendorInfo(CompanyList[$index+1])">Info <i class="fa fa-long-arrow-right"></i> </button>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+
+
+
+
+                </div>
+                    <div class="col-md-3" ng-hide="($index+2)>=CompanyList.length">
+                        <div class="ibox">
+                            <div class="ibox-content product-box">
+
+                                <div class="">
+
+                                    <img ng-src="{{CompanyList[$index+2].FilePath}}" style="width:100%;height:200px;" />
+                                </div>
+                                <div class="product-desc">
+                                    <span class="product-price">
+                                        ₱{{CompanyList[$index+2].EndPrice}}
+                                    </span>
+                                    <small class="text-muted">{{CompanyList[$index+2].ServiceName}}</small>
+
+                                    <div ng-show="!CompanyList[$index+2].RateTotal">
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+                                    <div ng-show="CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter >= 1 && CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter <2  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                    <div ng-show="CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter >= 2 && CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter <3  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                    <div ng-show="CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter >= 3 && CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter <4  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                    <div ng-show="CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter >= 4 && CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter <5  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                   
+
+                                    <div ng-show="CompanyList[$index+2].RateTotal/CompanyList[$index+2].RateCounter == 5">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                    </div>
+                                    <span class="small" ng-show="CompanyList[$index+2].RateTotal"> Rate by <strong> {{CompanyList[$index+2].RateCounter}} </strong> client(s)</span>
+                                    <span class="small" ng-hide="CompanyList[$index+2].RateTotal"> <strong> Unrated </strong></span>
+
+                                    <a href="#" style="margin-bottom:0px;" class="product-name"> {{CompanyList[$index+2].CompanyName}}</a>
+                                    <div class="small m-t-xs" style="font-weight:bold;margin-top:0px;">{{CompanyList[$index+2].City}}, {{CompanyList[$index+2].Province}}</div>
+
+
+
+                                    <div class="small m-t-xs" style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">
+                                        {{CompanyList[$index+2].Sypnosis}}
+                                    </div>
+                                    <div class="m-t text-righ">
+
+                                        <button class="btn btn-xs btn-outline btn-primary" ng-click="VendorInfo(CompanyList[$index+2])">Info <i class="fa fa-long-arrow-right"></i> </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-hide="($index+3)>=CompanyList.length">
+                        <div class="ibox">
+                            <div class="ibox-content product-box">
+
+                                <div class="">
+
+                                    <img ng-src="{{CompanyList[$index+3].FilePath}}" style="width:100%;height:200px;" />
+                                </div>
+                                <div class="product-desc">
+                                    <span class="product-price">
+                                        ₱{{CompanyList[$index+3].EndPrice}}
+                                    </span>
+                                    <small class="text-muted">{{CompanyList[$index+3].ServiceName}}</small>
+                                    <div ng-show="!CompanyList[$index+3].RateTotal">
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+                                    <div ng-show="CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter >= 1 && CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter <2  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                    <div ng-show="CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter >= 2 && CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter <3  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                    <div ng-show="CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter >= 3 && CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter <4  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                    <div ng-show="CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter >= 4 && CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter <5  ">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+
+                                    <div ng-show="CompanyList[$index+3].RateTotal/CompanyList[$index+3].RateCounter == 5">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                    </div>
+
+                                    <span class="small" ng-show="CompanyList[$index+3].RateTotal"> Rate by <strong> {{CompanyList[$index+3].RateCounter}} </strong> client(s)</span>
+                                    <span class="small" ng-hide="CompanyList[$index+3].RateTotal"> <strong> Unrated </strong> </span>
+
+                                    <a href="#" style="margin-bottom:0px;" class="product-name"> {{CompanyList[$index+3].CompanyName}}</a>
+                                    <div class="small m-t-xs" style="font-weight:bold;margin-top:0px;">{{CompanyList[$index+3].City}}, {{CompanyList[$index+3].Province}}</div>
+
+
+
+                                    <div class="small m-t-xs" style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">
+                                        {{CompanyList[$index+3].Sypnosis}}
+                                    </div>
+                                    <div class="m-t text-righ">
+
+                                        <button class="btn btn-xs btn-outline btn-primary" ng-click="VendorInfo(CompanyList[$index+3])">Info <i class="fa fa-long-arrow-right"></i> </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+
+
+
+            @* Product Detail *@
+            <div class=" wrapper wrapper-content animated fadeInRight" ng-hide="ShowVendorInfo==0">
+                <div class="row">
+                    
+                    <div class="col-lg-12" style="top:-80px;">
+                        
+                        <div class="ibox product-detail">
+
+                            <div class="ibox-content" style="padding-left:0px;padding-right:0px; margin-top:80px;">
+                               
+                                <div class="row">
+                                    <div class="col-md-5"  style="padding-left:30px;">
+
+                                        <button class="btn btn-lg btn-outline btn-warning" ng-click="VendorList()" ><span class="fa fa-long-arrow-left"></span></button>
+
+                                        <div class="product-images slick-initialized slick-slider" role="toolbar" style="margin-left:0px;margin-right:0px;">
+                                          
+
+                                          <img ng-src="{{VendorDetails.FilePath}}" style="padding-top:20px;height:370px;width:100%;border-radius:80px;"/>
+
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-7">
+
+                                        <h2 class="font-bold m-b-xs">
+                                            {{VendorDetails.CompanyName}}
+                                            <span class="fa fa-calendar pull-right clickable" style="margin-right:50px;" ng-click="vendorSched()"></span>
+                                        </h2>
+                                        <small>{{VendorDetails.ServiceName}}</small>
+                                        <div ng-show="!VendorDetails.RateTotal" style="font-size:36px">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+                                        <div style="font-size:36px" ng-show="VendorDetails.RateTotal/VendorDetails.RateCounter >= 1 && VendorDetails.RateTotal/VendorDetails.RateCounter <2  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div style="font-size:36px" ng-show="VendorDetails.RateTotal/VendorDetails.RateCounter >= 2 && VendorDetails.RateTotal/VendorDetails.RateCounter <3  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div style="font-size:36px" ng-show="VendorDetails.RateTotal/VendorDetails.RateCounter >= 3 && VendorDetails.RateTotal/VendorDetails.RateCounter <4  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div style="font-size:36px" ng-show="VendorDetails.RateTotal/VendorDetails.RateCounter >= 4 && VendorDetails.RateTotal/VendorDetails.RateCounter <5  ">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                        </div>
+
+                                        <div style="font-size:36px" ng-show="VendorDetails.RateTotal/VendorDetails.RateCounter == 5">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                        </div>
+
+                                       
+                                        <div class="m-t-md" style="margin-top:0px;">
+                                            <h4 style="margin-top:0px;">Vendor Price </h4>
+                                            <h2 class="product-main-price"> ₱{{VendorDetails.StartPrice}} - ₱{{VendorDetails.EndPrice}}</h2>
+                                        </div>
+                                        <hr>
+
+                                        <h4>Vendor description</h4>
+
+                                        <div class="small text-muted">
+                                            
+                                           {{VendorDetails.Sypnosis}}
+                                        </div>
+                                        <div class="small m-t-md">
+                                           
+                                            <a target="_self" ng-href="{{VendorDetails.FilePath}}" class="btn btn-md btn-outline btn-rounded btn-warning pull-right" title="Company Logo" style="margin-right:20px;" data-gallery><span class="fa fa-picture-o"></span>  View Gallery</a>
+                                            <a ng-repeat="img in Img track by $index" target="_self" ng-href="{{img}}" data-gallery="" title="Sample work/service"></a>
+                                           
+                                            
+                                            <span class="fa fa-map-marker"></span>     {{VendorDetails.Province}},{{VendorDetails.City}}
+                                            
+
+                                            
+
+                                            <div>
+                                                Contact us <b>{{VendorDetails.ContactNo}}</b>
+                                            </div>
+
+                                        </div>
+                                        <hr>
+
+                                        <div>
+                                            <div class="btn-group">
+                                                
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#RequestBook" ng-click="loadSchedSel()" ><i class="fa fa-book"></i> Request Booking</button>
+                                                <button class="btn btn-white btn-sm" ng-click="setBookmark(VendorDetails)" ng-style="{'color':(isBookmarked==1)?'#544d44':'','background-color':(isBookmarked==1)?'#ffe800':''}"><i class="fa fa-bookmark"></i> <i style="font-style:normal" ng-hide="isBookmarked==1">Bookmark</i> <i style="font-style:normal;font-weight:bold" ng-hide="isBookmarked==0">Bookmarked</i></button>
+                                                <button class="btn btn-white btn-sm" data-toggle="modal" data-target="#SendMessage"><i class="fa fa-envelope"></i> Send Message </button>
+                                                <div style="display:inline" ng-show="Booked">
+                                                    <button class="btn btn-white btn-sm" data-toggle="modal" data-target="#ReviewRate" ng-hide="isRated==1"><i class="fa fa-star"></i> Rate Company</button>
+                                                    <button class="btn btn-white btn-sm" ng-show="isRated==1" style="background:#a99684;color:yellow"><i class="fa fa-star"></i> Rated</button>
+                                                </div>
+                                                </div>
+
+
+
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                          
+                            <div class="ibox-footer col-md-8" style="margin-top:20px;right:5px;">
+                                <div style="font-size:30px;color:#c7a519;margin-bottom:20px;">
+                                    <span class="fa fa-thumbs-up" style="padding-left:15px;"></span><strong style="padding-left:10px;">REVIEWS</strong>
+                                </div>
+                                <div style="text-align:center;font-style:italic;font-size:20px;color:#101010a8" ng-show="RatingList.length==0">No Reviews Yet</div>
+                                <div class="feed-activity-list" ng-repeat="rates in RatingList|orderBy:'-'">
+                                    <div class="feed-element" style="margin-bottom: 10px;border-bottom-width:0px;">
+                                        <div class="pull-left">
+                                            <img alt="image" class="img-circle" ng-src="{{rates.userprofpic}}">
+                                        </div>
+                                        <div class="media-body ">
+                                            <small class="pull-right">{{rates.DateRated }}</small>
+                                            Rate by <strong>{{rates.userlname}} {{rates.userfname.slice(0,1)}}</strong> . <br>
+                                            
+                                            <small class="text-muted inline">
+                                                <span ng-class="{'fa fa-star checked': rates.Rating >= 1,'fa fa-star ': rates.Rating < 1}"></span>
+                                                <span ng-class="{'fa fa-star checked': rates.Rating >= 2,'fa fa-star ': rates.Rating < 2}"></span>
+                                                <span ng-class="{'fa fa-star checked': rates.Rating >= 3,'fa fa-star ': rates.Rating < 3}"></span>
+                                                <span ng-class="{'fa fa-star checked': rates.Rating >= 4,'fa fa-star ': rates.Rating < 4}"></span>
+                                                <span ng-class="{'fa fa-star checked': rates.Rating >= 5,'fa fa-star ': rates.Rating < 5}"></span>
+                                            </small>
+                                            <div class="well">
+                                                {{rates.Comment}}
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="ibox-footer col-md-4" style="margin-top:20px;">
+                                <div class="ibox">
+                                    <div class="ibox-title" style="border-top:0px;">
+                                        
+                                        <h5>Other Services Offered</h5>
+                                    </div>
+                                    <div class="ibox-content" ng-repeat="own in OwnComp" style="padding:10px;">
+                                        <div class="table-responsive">
+                                            <table class="table shoping-cart-table">
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="90" style="text-align:center">
+
+                                                            <img ng-src="{{own.Img}}" width="90px" height="90px" style="border-radius:15px;" />
+
+
+
+
+
+                                                        </td>
+                                                        <td class="desc" style="padding:0px;">
+                                                            <h3 style="margin-top:10px;margin-bottom:5px;">
+                                                                <a href="#" class="text-navy">
+                                                                    {{own.CompanyInfo.CompanyName}}
+                                                                </a>
+                                                               
+                                                            </h3>
+                                                            <small style="font-size:10px;margin-bottom:10px">     {{own.ServiceName}}</small><br />
+                                                            <small style="font-size:10px;margin-bottom:10px"><span class="fa fa-map-marker"></span>     {{own.CompanyInfo.City}}</small><br />
+                                                            <button class="btn btn-success btn-outline" style="margin-top:10px" ng-click="showdet(own)">CHECK</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                   
+                                  
+                                </div>
+                                 
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        
+            </div>
+    
+
+        </div>
+
+
+<div class="modal inmodal" id="VendorSched" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-table modal-icon"></i>
+                <h4 class="modal-title">Vendor Schedules</h4>
+                <small class="font-bold">Availability of the vendor</small>
+            </div>
+            <div class="modal-body">
+
+
+               
+               
+                <div id="calendar1"></div>
+
+
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="RequestBook" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-table modal-icon"></i>
+                <h4 class="modal-title">Request Booking</h4>
+                <small class="font-bold">Let the vendor know that you would like to avail their services</small>
+            </div>
+            <div class="modal-body">
+                
+                   
+                        <p>
+                            <textarea rows="5" ng-required="" ng-model="Msg"  style="width:100%;display:block;" placeholder="Hello, I would like to request a booking of your services."></textarea>
+                        </p>
+                    
+                <div style="font-size:40px;font-weight:bold;color: #005bff;">Choose Date</div>
+                   
+                        <div id="calendar" ></div>
+                   
+             
+               
+                <div class="modal-footer">
+                    <div style="margin-bottom:30px;">
+                       
+                      
+                    </div>
+                    <div style="margin-bottom:30px;">
+                        <label>Start Time</label>  <input class="timepicker text-center" style="font-size:24px;" id="timeStart" ng-model="eventStartT" />
+                        <label style="padding-left:20px;">End Time</label> <input class="timepicker text-center" style="font-size:24px;" id="timeEnd" ng-model="eventEndT" />
+                    </div>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-disabled="DateSelCounter" ng-click="SendBookRequest(Msg)">Send Request</button>    
+                    <small class="pull-left" ng-show="DateSelCounter" style="color:red">Please select a date!</small><br/>
+                    <small class="pull-left" ng-show="DateSelCounter" style="color:red">(Drag to select multiple dates)</small>
+                    <small class="pull-left" ng-show="!DateSelCounter" style="color:green">{{convertJsonDate(BookDate)}} - {{subtractEndDate(BookEnd)}}</small><br/>
+                    <small class="pull-left" ng-show="!DateSelCounter" style="color:green">Book for {{BookDiff}} day(s)</small>
+                   
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="ReviewRate" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-heart-o modal-icon"></i>
+                <h4 class="modal-title">Rate Company</h4>
+                <small class="font-bold">Rate and express your opinion of this company</small>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <textarea rows="5" ng-required="" ng-model="r.Comment" style="width:100%;display:block;" placeholder="Your comments and opinions regarding the service, products, or performance of the Company"></textarea>
+                </p>
+                <div class="form-group"  style="margin-bottom:0px;"><label style="margin-bottom:0px;font-size:18px;">Rating</label> </div>
+                <div>
+                    <span ng-repeat="rate in rates" ng-model="r.Rating" ng-class="{'fa fa-star checked clickable': rate.rate <= rateNum,'fa fa-star clickable':rate.rate>rateNum}" ng-mouseover="Starhover(rate)" ng-mouseleave="Starleave(rate)" ng-click="Starclick(rate)" style="font-size:30px;"></span>
+                    <span style="font-size:30px;padding-left:15px;">{{rates[rateNum].name}}</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="SaveRating(r)">Send Review</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+<div class="modal inmodal" id="SendMessage" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <i class="fa fa-envelope modal-icon"></i>
+                <h4 class="modal-title">Send Message</h4>
+                <small class="font-bold">Start conversation with <bold>{{VendorDetails.CompanyName}}</bold>. Ask questions and inquiries</small>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <textarea rows="5" ng-required="" ng-model="msg" style="width:100%;display:block;" placeholder="Ask question for more details"></textarea>
+                </p>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="SendMessage(msg)">Send Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+   </div>                     
+
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+
+        <ol class="indicator"></ol>
+    </div>
+
+
+
+
+
+
+
